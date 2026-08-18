@@ -49,6 +49,16 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/goals/goals').then((m) => m.Goals),
       },
+      {
+        path: 'recurring-expenses',
+        loadComponent: () =>
+          import('./pages/recurring-expenses/recurring-expenses').then((m) => m.RecurringExpenses),
+      },
+      {
+        path: 'investments',
+        loadComponent: () =>
+          import('./pages/investments/investments').then((m) => m.Investments),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

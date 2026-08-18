@@ -100,9 +100,9 @@ export class Transactions implements OnInit {
           this.load();
           this.loading.set(false);
         },
-        error: (err: { error?: { message?: string } }) => {
+        error: (err: { error?: { detail?: string } }) => {
           this.loading.set(false);
-          this.error.set(err.error?.message ?? 'Erro ao salvar.');
+          this.error.set(err.error?.detail ?? 'Erro ao salvar.');
         },
       });
     } else {
@@ -112,9 +112,9 @@ export class Transactions implements OnInit {
           this.load();
           this.loading.set(false);
         },
-        error: (err: { error?: { message?: string } }) => {
+        error: (err: { error?: { detail?: string } }) => {
           this.loading.set(false);
-          this.error.set(err.error?.message ?? 'Erro ao salvar.');
+          this.error.set(err.error?.detail ?? 'Erro ao salvar.');
         },
       });
     }

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { DashboardSummary, ExpensesByCategory, MonthlyEvolution } from '../models/dashboard.model';
+import { DashboardSummary, ExpensesByCategory, MonthlyEvolution, SavingsRate, BalanceEvolution } from '../models/dashboard.model';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
@@ -17,5 +17,13 @@ export class DashboardService {
 
   getMonthlyEvolution(months: number = 12): Observable<MonthlyEvolution[]> {
     return this.api.get<MonthlyEvolution[]>('/dashboard/monthly-evolution', { months });
+  }
+
+  getSavingsRate(month: number, year: number): Observable<SavingsRate> {
+    return this.api.get<SavingsRate>('/dashboard/savings-rate', { month, year });
+  }
+
+  getBalanceEvolution(months: number = 12): Observable<BalanceEvolution[]> {
+    return this.api.get<BalanceEvolution[]>('/dashboard/balance-evolution', { months });
   }
 }

@@ -102,7 +102,7 @@ export class Budgets implements OnInit {
       },
       error: (err) => {
         this.loading.set(false);
-        this.error.set(err.error?.message ?? 'Erro ao salvar.');
+        this.error.set(err.error?.detail ?? 'Erro ao salvar.');
       },
     });
   }

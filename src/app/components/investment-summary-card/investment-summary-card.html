@@ -1,0 +1,13 @@
+<div class="rounded-xl bg-white p-6 shadow-sm">
+  <h3 class="mb-2 text-sm font-medium text-gray-500">Investimentos</h3>
+  <div class="flex items-end justify-between">
+    <div>
+      <p class="text-2xl font-semibold text-gray-900">{{ totalCurrentValue() | currency:'BRL':'symbol':'1.2-2' }}</p>
+      <p class="text-sm text-gray-500">Investido: {{ totalInvested() | currency:'BRL':'symbol':'1.2-2' }}</p>
+    </div>
+    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-sm font-medium"
+      [class]="returnPercentage() >= 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'">
+      {{ returnPercentage() >= 0 ? '+' : '' }}{{ returnPercentage() | number:'1.2-2' }}%
+    </span>
+  </div>
+</div>

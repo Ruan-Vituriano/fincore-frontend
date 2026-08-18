@@ -45,7 +45,7 @@ export class Register {
       },
       error: (err) => {
         this.loading.set(false);
-        this.error.set(err.error?.message ?? 'Erro ao criar conta.');
+        this.error.set(err.error?.detail ?? 'Erro ao criar conta.');
       },
     });
   }

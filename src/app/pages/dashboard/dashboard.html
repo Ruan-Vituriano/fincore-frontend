@@ -39,6 +39,28 @@
     <app-summary-cards [income]="s.income" [expense]="s.expense" [balance]="s.balance" />
   }
 
+  <!-- Investment Summary -->
+  @if (portfolio(); as p) {
+    @if (p.totalInvested > 0) {
+      <app-investment-summary-card
+        [totalInvested]="p.totalInvested"
+        [totalCurrentValue]="p.totalCurrentValue"
+        [returnPercentage]="p.totalReturnPercentage"
+      />
+    }
+  }
+
+  <!-- Savings Rate + Balance Evolution -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    @if (savingsRate(); as sr) {
+      <app-savings-rate-card [income]="sr.income" [expense]="sr.expense" [savingsRate]="sr.savingsRate" />
+    }
+
+    @if (balanceEvolution().length > 0) {
+      <app-balance-evolution-chart [data]="balanceEvolution()" />
+    }
+  </div>
+
   <!-- Charts -->
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
     @if (expensesByCategory().length > 0) {

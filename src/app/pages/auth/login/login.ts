@@ -33,7 +33,7 @@ export class Login {
       },
       error: (err) => {
         this.loading.set(false);
-        this.error.set(err.error?.message ?? 'Email ou senha inválidos.');
+        this.error.set(err.error?.detail ?? 'Email ou senha inválidos.');
       },
     });
   }

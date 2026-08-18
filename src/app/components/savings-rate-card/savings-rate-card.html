@@ -1,0 +1,44 @@
+<div class="rounded-xl bg-white p-6 shadow-sm">
+  <h3 class="mb-4 text-sm font-medium text-gray-500">Taxa de Poupança</h3>
+  <div class="flex items-center gap-6">
+    <div class="relative h-24 w-24">
+      <svg class="h-24 w-24 -rotate-90" viewBox="0 0 36 36">
+        <path
+          class="text-gray-100"
+          stroke-width="3"
+          fill="none"
+          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+        />
+        <path
+          [class]="savingsRate() >= 20 ? 'text-emerald-500' : savingsRate() >= 10 ? 'text-yellow-500' : 'text-red-500'"
+          stroke-width="3"
+          fill="none"
+          stroke-linecap="round"
+          [attr.stroke-dasharray]="savingsRate() > 100 ? '100, 100' : savingsRate() + ', 100'"
+          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+        />
+      </svg>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <span class="text-lg font-semibold" [class]="savingsRate() >= 20 ? 'text-emerald-600' : savingsRate() >= 10 ? 'text-yellow-600' : 'text-red-600'">
+          {{ savingsRate() | number:'1.0-0' }}%
+        </span>
+      </div>
+    </div>
+    <div class="flex-1 space-y-2">
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-gray-500">Receitas</span>
+        <span class="font-medium text-emerald-600">{{ income() | currency:'BRL':'symbol':'1.2-2' }}</span>
+      </div>
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-gray-500">Despesas</span>
+        <span class="font-medium text-red-600">{{ expense() | currency:'BRL':'symbol':'1.2-2' }}</span>
+      </div>
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-gray-500">Economia</span>
+        <span class="font-medium" [class]="income() - expense() >= 0 ? 'text-emerald-600' : 'text-red-600'">
+          {{ (income() - expense()) | currency:'BRL':'symbol':'1.2-2' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

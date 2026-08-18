@@ -17,3 +17,17 @@ export interface MonthlyEvolution {
   income: number;
   expense: number;
 }
+
+export interface SavingsRate {
+  month: number;
+  year: number;
+  income: number;
+  expense: number;
+  savingsRate: number;
+}
+
+export interface BalanceEvolution {
+  month: number;
+  year: number;
+  balance: number;
+}
