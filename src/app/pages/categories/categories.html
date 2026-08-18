@@ -1,0 +1,88 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h2 class="text-lg font-semibold text-gray-900">Categorias</h2>
+    <button (click)="openCreate()" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
+      Nova Categoria
+    </button>
+  </div>
+
+  <div class="rounded-xl bg-white shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="border-b border-gray-200 bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 font-medium text-gray-500">Nome</th>
+            <th class="px-4 py-3 font-medium text-gray-500">Tipo</th>
+            <th class="px-4 py-3 font-medium text-gray-500">Cor</th>
+            <th class="px-4 py-3 font-medium text-gray-500">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          @for (cat of categories(); track cat.id) {
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3">{{ cat.name }}</td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium"
+                  [class]="cat.type === 'INCOME' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'">
+                  {{ cat.type === 'INCOME' ? 'Receita' : 'Despesa' }}
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                @if (cat.color) {
+                  <span class="inline-block h-4 w-4 rounded-full" [style.background]="cat.color"></span>
+                }
+              </td>
+              <td class="px-4 py-3">
+                <button (click)="openEdit(cat)" class="mr-2 text-emerald-600 hover:text-emerald-800">Editar</button>
+                <button (click)="delete(cat.id)" class="text-red-600 hover:text-red-800">Excluir</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="4" class="px-4 py-8 text-center text-gray-500">Nenhuma categoria encontrada.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  @if (showModal()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+        <h3 class="mb-4 text-lg font-semibold">{{ editingId() ? 'Editar' : 'Nova' }} Categoria</h3>
+
+        @if (error()) {
+          <div class="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{{ error() }}</div>
+        }
+
+        <form (ngSubmit)="save()" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Nome</label>
+            <input [(ngModel)]="form.name" name="name" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Tipo</label>
+            <select [(ngModel)]="form.type" name="type" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              @for (t of types; track t) {
+                <option [value]="t">{{ t === 'INCOME' ? 'Receita' : 'Despesa' }}</option>
+              }
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Cor (hex)</label>
+            <input [(ngModel)]="form.color" name="color" placeholder="#FF0000" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+          </div>
+
+          <div class="flex justify-end gap-3">
+            <button type="button" (click)="showModal.set(false)" class="rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-100">Cancelar</button>
+            <button type="submit" [disabled]="loading()" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50">
+              {{ loading() ? 'Salvando...' : 'Salvar' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

@@ -1,510 +1,271 @@
-# PLAN.md — Fincore Frontend
+# Plano do Fincore Frontend
 
-## Visão Geral
+Frontend Angular para o Fincore, focado em gestão de finanças pessoais. O projeto
+consome a API do backend em repositório separado.
 
-Frontend Angular para a API Fincore — gestão de finanças pessoais com sugestões via IA.
+## Stack atual
 
-Repositório separado do backend (`fincore`).
+- Angular 21
+- TypeScript 5.9
+- Tailwind CSS 4
+- RxJS 7.8
+- Angular Router
+- chart.js (gráficos)
 
----
+## Estrutura de pastas
 
-## Stack
-
-- Angular 22.x
-- TypeScript 5.8+
-- Tailwind CSS 4.x
-- ng2-charts 10.x + Chart.js 4.x
-- RxJS 7.4+
-- Angular Router 22.x
-
----
-
-## Estrutura de Pastas
-
-```
+```text
 fincore-frontend/
 ├── src/
 │   ├── app/
-│   │   ├── core/
-│   │   │   ├── auth/
-│   │   │   │   ├── auth.service.ts
-│   │   │   │   ├── auth.guard.ts
-│   │   │   │   └── auth.interceptor.ts
-│   │   │   ├── api/
-│   │   │   │   └── api.service.ts
-│   │   │   └── models/
-│   │   │       └── user.model.ts
-│   │   ├── shared/
-│   │   │   ├── components/
-│   │   │   │   ├── sidebar/
-│   │   │   │   ├── header/
-│   │   │   │   └── data-table/
-│   │   │   └── pipes/
-│   │   ├── features/
+│   │   ├── core/                         # Infraestrutura transversal
+│   │   │   ├── guards/
+│   │   │   │   └── auth.guard.ts
+│   │   │   └── interceptors/
+│   │   │       └── auth.interceptor.ts
+│   │   ├── models/                       # Interfaces e tipos de domínio
+│   │   │   ├── auth.model.ts
+│   │   │   ├── user.model.ts
+│   │   │   ├── category.model.ts
+│   │   │   ├── account.model.ts
+│   │   │   ├── transaction.model.ts
+│   │   │   ├── budget.model.ts
+│   │   │   ├── goal.model.ts
+│   │   │   └── dashboard.model.ts
+│   │   ├── services/                     # Serviços compartilhados e API
+│   │   │   ├── api.service.ts
+│   │   │   ├── auth.service.ts
+│   │   │   ├── dashboard.service.ts
+│   │   │   ├── category.service.ts
+│   │   │   ├── account.service.ts
+│   │   │   ├── transaction.service.ts
+│   │   │   ├── budget.service.ts
+│   │   │   └── goal.service.ts
+│   │   ├── pages/                        # Componentes associados a rotas
 │   │   │   ├── auth/
 │   │   │   │   ├── login/
-│   │   │   │   ├── register/
-│   │   │   │   └── auth.routes.ts
+│   │   │   │   └── register/
 │   │   │   ├── dashboard/
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── summary-cards/
-│   │   │   │   │   ├── expenses-by-category-chart/
-│   │   │   │   │   └── monthly-evolution-chart/
-│   │   │   │   ├── services/
-│   │   │   │   └── dashboard.routes.ts
 │   │   │   ├── transactions/
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── transaction-list/
-│   │   │   │   │   └── transaction-form/
-│   │   │   │   ├── services/
-│   │   │   │   └── transaction.routes.ts
 │   │   │   ├── categories/
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── category-list/
-│   │   │   │   │   └── category-form/
-│   │   │   │   ├── services/
-│   │   │   │   └── category.routes.ts
 │   │   │   ├── accounts/
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── account-list/
-│   │   │   │   │   └── account-form/
-│   │   │   │   ├── services/
-│   │   │   │   └── account.routes.ts
 │   │   │   ├── budgets/
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── budget-list/
-│   │   │   │   │   ├── budget-form/
-│   │   │   │   │   └── budget-summary/
-│   │   │   │   ├── services/
-│   │   │   │   └── budget.routes.ts
 │   │   │   └── goals/
-│   │   │       ├── components/
-│   │   │       │   ├── goal-list/
-│   │   │       │   ├── goal-form/
-│   │   │       │   └── goal-progress/
-│   │   │       ├── services/
-│   │   │       └── goal.routes.ts
-│   │   ├── app.component.ts
+│   │   ├── components/                   # Componentes específicos da aplicação
+│   │   │   ├── expenses-by-category-chart/
+│   │   │   ├── monthly-evolution-chart/
+│   │   │   └── summary-cards/
+│   │   ├── shared/                       # Elementos reutilizáveis e sem domínio
+│   │   │   ├── components/
+│   │   │   │   ├── data-table/
+│   │   │   │   ├── header/
+│   │   │   │   ├── sidebar/
+│   │   │   │   └── layout/
+│   │   │   └── pipes/
+│   │   ├── environments/
+│   │   │   ├── environment.ts
+│   │   │   └── environment.development.ts
 │   │   ├── app.config.ts
-│   │   └── app.routes.ts
-│   ├── environments/
-│   │   ├── environment.ts
-│   │   └── environment.prod.ts
+│   │   ├── app.routes.ts
+│   │   └── app.ts
+│   ├── main.ts
 │   └── styles.css
 ├── angular.json
 ├── package.json
-├── tsconfig.json
-└── .gitignore
+├── proxy.conf.json
+└── tsconfig.json
 ```
+
+### Convenções
+
+- Todo serviço fica em `app/services`; não criar `services` dentro de páginas ou componentes.
+- Todo model, interface ou tipo de domínio fica em `app/models`.
+- `app/pages` contém somente telas acessadas por rotas.
+- `app/components` contém componentes de domínio usados por uma ou mais páginas.
+- `app/shared` contém componentes, pipes e utilitários genéricos, sem regra de negócio.
+- Guards e interceptors pertencem a `app/core`.
+- Formulários utilizam modal/dialog sobre a listagem.
 
 ---
 
-## Fase 1 — Projeto Base e Configuração
+## Fase 1 — Base da aplicação
 
-### Tarefas
+- [x] Projeto Angular criado
+- [x] Tailwind CSS configurado
+- [x] Criar models (interfaces TS para cada entidade do backend)
+- [x] Criar ambientes (`environment.ts`, `environment.development.ts`)
+- [x] Criar proxy (`proxy.conf.json`) e configurar no `angular.json`
+- [x] Configurar `provideHttpClient` com interceptor no `app.config.ts`
+- [x] Criar `ApiService` (wrapper genérico do `HttpClient`)
+- [x] Criar `AuthService` (login, register, logout, persistência do token)
+- [x] Criar `AuthInterceptor` (injeta `Authorization: Bearer`)
+- [x] Criar `AuthGuard` (protege rotas autenticadas)
 
-- [ ] Criar projeto Angular com `ng new fincore-frontend`
-- [ ] Configurar Tailwind CSS v4
-- [ ] Configurar path aliases (`@core/*`, `@shared/*`, `@features/*`)
-- [ ] Configurar environments (dev/prod)
-- [ ] Configurar proxy para API em desenvolvimento
+### Models a criar
 
-### Configuração do Proxy
-
-```json
-{
-  "/api": {
-    "target": "http://localhost:8080",
-    "secure": false
-  }
-}
-```
-
----
-
-## Fase 2 — Core (Auth, Interceptor, Guards)
-
-### Serviços
-
-#### AuthService
-
-| Método | Retorno | Descrição |
-|--------|---------|-----------|
-| `login(email, password)` | `Observable<TokenResponse>` | Login e armazena JWT |
-| `register(name, email, password)` | `Observable<void>` | Cadastro |
-| `logout()` | `void` | Limpa token e redireciona |
-| `getMe()` | `Observable<User>` | Busca perfil do logado |
-| `isLoggedIn()` | `boolean` | Verifica se está autenticado |
-| `getToken()` | `string \| null` | Retorna token JWT |
-
-#### Auth Interceptor
-
-- Adiciona header `Authorization: Bearer <token>` em todas as requisições
-- Ignora rotas `/auth/login` e `/auth/register`
-
-#### Auth Guard
-
-- Verifica se usuário está autenticado
-- Redireciona para `/login` se não estiver
-
-### Models
-
-```typescript
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'USER' | 'ADMIN';
-}
-
-interface TokenResponse {
-  accessToken: string;
-}
-```
+| Model | Campos principais |
+|---|---|
+| `auth.model.ts` | `LoginRequest`, `RegisterRequest`, `TokenResponse` |
+| `user.model.ts` | `User`, `UserRequest`, `UserResponse` |
+| `category.model.ts` | `Category`, `CategoryRequest`, `CategoryResponse`, `CategoryType` |
+| `account.model.ts` | `Account`, `AccountRequest`, `AccountResponse`, `AccountType` |
+| `transaction.model.ts` | `Transaction`, `TransactionRequest`, `TransactionResponse`, `TransactionType` |
+| `budget.model.ts` | `Budget`, `BudgetRequest`, `BudgetResponse`, `BudgetSummary` |
+| `goal.model.ts` | `FinancialGoal`, `GoalRequest`, `GoalResponse`, `GoalProgress` |
+| `dashboard.model.ts` | `DashboardSummary`, `ExpensesByCategory`, `MonthlyEvolution` |
 
 ---
 
-## Fase 3 — Layout (Sidebar + Header)
+## Fase 2 — Layout
 
-### Componentes
-
-#### SidebarComponent
-
-- Logo/nome da aplicação
-- Links de navegação:
-  - Dashboard
-  - Transações
-  - Categorias
-  - Contas
-  - Orçamentos
-  - Metas
-- Botão de logout
-- Colapsável em telas pequenas
-
-#### HeaderComponent
-
-- Título da página atual
-- Botão do perfil do usuário
-- Toggle da sidebar (mobile)
-
-### Layout Principal
-
-```
-┌─────────────────────────────────────────┐
-│ Sidebar │        Header                  │
-│         │────────────────────────────────│
-│  Menu   │                                │
-│         │        Conteúdo                │
-│         │                                │
-│         │                                │
-└─────────────────────────────────────────┘
-```
+- [x] Sidebar responsiva com navegação e estado ativo
+- [x] Header com título da página e perfil do usuário
+- [x] Layout autenticado (sidebar + header + `<router-outlet>`)
+- [x] Limpar placeholder do `app.html`
 
 ---
 
-## Fase 4 — Auth (Login/Cadastro)
+## Fase 3 — Autenticação (telas)
 
-### Páginas
+- [x] Login: formulário email + senha, redireciona para `/dashboard`
+- [x] Register: formulário nome + email + senha, redireciona para `/dashboard`
 
-#### LoginPage
+---
 
-- Formulário com email e senha
-- Link "Criar conta" para `/register`
-- Mensagem de erro
-- Redirecionamento para `/dashboard` após login
+## Fase 4 — Rotas
 
-#### RegisterPage
+- [x] Configurar todas as rotas com lazy loading e `authGuard`
 
-- Formulário com nome, email e senha
-- Link "Já tenho conta" para `/login`
-- Mensagem de sucesso/erro
-- Redirecionamento para `/login` após cadastro
+| Rota | Página | Proteção |
+|---|---|---|
+| `/login` | `pages/auth/login` | Pública |
+| `/register` | `pages/auth/register` | Pública |
+| `/dashboard` | `pages/dashboard` | `authGuard` |
+| `/transactions` | `pages/transactions` | `authGuard` |
+| `/categories` | `pages/categories` | `authGuard` |
+| `/accounts` | `pages/accounts` | `authGuard` |
+| `/budgets` | `pages/budgets` | `authGuard` |
+| `/goals` | `pages/goals` | `authGuard` |
 
 ---
 
 ## Fase 5 — Dashboard
 
-### Endpoints Utilizados
+- [x] `DashboardService` (chamadas aos 3 endpoints)
+- [x] Cards de resumo financeiro (Receitas, Despesas, Saldo)
+- [x] Gráfico de despesas por categoria (chart.js pizza)
+- [x] Gráfico de evolução mensal (chart.js linhas)
+- [x] Página dashboard com seletor de mês/ano
 
-- `GET /api/v1/dashboard/summary?month=&year=`
-- `GET /api/v1/dashboard/expenses-by-category?month=&year=`
-- `GET /api/v1/dashboard/monthly-evolution?months=12`
+### Endpoints consumidos
 
-### Componentes
-
-#### SummaryCardsComponent
-
-- Card: Total de Receitas (verde)
-- Card: Total de Despesas (vermelho)
-- Card: Saldo (azul)
-- Seletor de mês/ano
-
-#### ExpensesByCategoryChartComponent
-
-- Gráfico de pizza/doughnut
-- Gastos agrupados por categoria
-- Legenda com cores
-
-#### MonthlyEvolutionChartComponent
-
-- Gráfico de linha
-- Evolução de receitas vs despesas
-- Últimos 12 meses
+| Endpoint | Params | Response |
+|---|---|---|
+| `GET /api/v1/dashboard/summary` | `month`, `year` | `{ income, expense, balance }` |
+| `GET /api/v1/dashboard/expenses-by-category` | `month`, `year` | `[{ categoryId, categoryName, total, percentage }]` |
+| `GET /api/v1/dashboard/monthly-evolution` | `months` (default 12) | `[{ month, year, income, expense }]` |
 
 ---
 
-## Fase 6 — Transações
+## Fase 6 — Módulos financeiros
 
-### Endpoints Utilizados
+Cada módulo: service + página com listagem + modal de criar/editar.
 
-- `GET /api/v1/transactions`
-- `POST /api/v1/transactions`
-- `PUT /api/v1/transactions/{id}`
-- `DELETE /api/v1/transactions/{id}`
-- `GET /api/v1/transactions/installments/{parentId}`
+### 6.1 Categorias
 
-### Componentes
+- [x] `CategoryService` (CRUD)
+- [x] Página com listagem (tabela)
+- [x] Modal criar/editar
 
-#### TransactionListComponent
+| Endpoint | Método | Body |
+|---|---|---|
+| `/api/v1/categories` | GET | — |
+| `/api/v1/categories` | POST | `{ name, type, icon?, color? }` |
+| `/api/v1/categories/{id}` | PUT | `{ name, type, icon?, color? }` |
+| `/api/v1/categories/{id}` | DELETE | — |
 
-- Tabela com lista de transações
-- Filtros: data, categoria, conta, tipo
-- Botão "Nova Transação"
-- Ações: editar, excluir
-- Indicador de parcelamento
+### 6.2 Contas
 
-#### TransactionFormComponent
+- [x] `AccountService` (CRUD)
+- [x] Página com listagem (tabela + saldo)
+- [x] Modal criar/editar
 
-- Formulário de criação/edição
-- Campos: descrição, valor, data, tipo, categoria, conta, notas
-- Checkbox "Parcelado"
-- Campos de parcelamento (número de parcelas)
-- Validação de campos obrigatórios
+| Endpoint | Método | Body |
+|---|---|---|
+| `/api/v1/accounts` | GET | — |
+| `/api/v1/accounts` | POST | `{ name, type, balance }` |
+| `/api/v1/accounts/{id}` | PUT | `{ name, type, balance }` |
+| `/api/v1/accounts/{id}` | DELETE | — |
 
----
+### 6.3 Transações
 
-## Fase 7 — Categorias
+- [x] `TransactionService` (CRUD + filtros)
+- [x] Página com listagem + filtros (data, categoria, conta, tipo)
+- [x] Modal criar/editar (suporta parcelamento)
 
-### Endpoints Utilizados
+| Endpoint | Método | Body / Params |
+|---|---|---|
+| `/api/v1/transactions` | GET | `?dateFrom=&dateTo=&categoryId=&accountId=&type=` |
+| `/api/v1/transactions` | POST | `{ description, amount, date, categoryId, accountId, notes?, isRecurring?, totalInstallments? }` |
+| `/api/v1/transactions/{id}` | PUT | `{ ... }` + `?applyToAll=` |
+| `/api/v1/transactions/{id}` | DELETE | `?applyToAll=` |
+| `/api/v1/transactions/installments/{parentId}` | GET | — |
 
-- `GET /api/v1/categories`
-- `POST /api/v1/categories`
-- `PUT /api/v1/categories/{id}`
-- `DELETE /api/v1/categories/{id}`
+### 6.4 Orçamentos
 
-### Componentes
+- [x] `BudgetService` (CRUD + summary)
+- [x] Página com listagem + resumo mensal (gasto vs orçado)
+- [x] Modal criar/editar
 
-#### CategoryListComponent
+| Endpoint | Método | Body / Params |
+|---|---|---|
+| `/api/v1/budgets` | GET | `?month=&year=` |
+| `/api/v1/budgets` | POST | `{ name, amount, categoryId, month, year }` |
+| `/api/v1/budgets/{id}` | PUT | `{ name, amount, categoryId, month, year }` |
+| `/api/v1/budgets/{id}` | DELETE | — |
+| `/api/v1/budgets/summary` | GET | `?month=&year=` → `[{ budgeted, spent, remaining, percentageUsed }]` |
 
-- Lista de categorias (globais + do usuário)
-- Botão "Nova Categoria"
-- Ações: editar, excluir
+### 6.5 Metas
 
-#### CategoryFormComponent
+- [x] `GoalService` (CRUD + progress)
+- [x] Página com listagem + barra de progresso
+- [x] Modal criar/editar
 
-- Formulário de criação/edição
-- Campos: nome, tipo (receita/despesa), ícone, cor
-
----
-
-## Fase 8 — Contas Bancárias
-
-### Endpoints Utilizados
-
-- `GET /api/v1/accounts`
-- `POST /api/v1/accounts`
-- `PUT /api/v1/accounts/{id}`
-- `DELETE /api/v1/accounts/{id}`
-
-### Componentes
-
-#### AccountListComponent
-
-- Lista de contas
-- Saldo atual de cada conta
-- Botão "Nova Conta"
-- Ações: editar, excluir
-
-#### AccountFormComponent
-
-- Formulário de criação/edição
-- Campos: nome, tipo (corrente/poupança/crédito), saldo inicial
+| Endpoint | Método | Body / Params |
+|---|---|---|
+| `/api/v1/goals` | GET | — |
+| `/api/v1/goals` | POST | `{ name, targetAmount, currentAmount?, deadline? }` |
+| `/api/v1/goals/{id}` | PUT | `{ name, targetAmount, currentAmount?, deadline? }` |
+| `/api/v1/goals/{id}` | DELETE | — |
+| `/api/v1/goals/{id}/progress` | GET | → `{ percentageAchieved, ... }` |
 
 ---
 
-## Fase 9 — Orçamentos
+## Fase 7 — Conclusão
 
-### Endpoints Utilizados
-
-- `GET /api/v1/budgets`
-- `POST /api/v1/budgets`
-- `PUT /api/v1/budgets/{id}`
-- `DELETE /api/v1/budgets/{id}`
-- `GET /api/v1/budgets/summary?month=&year=`
-
-### Componentes
-
-#### BudgetListComponent
-
-- Lista de orçamentos
-- Resumo gasto vs orçado (barra de progresso)
-- Botão "Novo Orçamento"
-- Ações: editar, excluir
-
-#### BudgetFormComponent
-
-- Formulário de criação/edição
-- Campos: nome, valor limite, categoria, mês, ano
-
-#### BudgetSummaryComponent
-
-- Barra de progresso (gasto/orçado)
-- Percentual utilizado
-- Cor: verde (< 70%), amarelo (70-90%), vermelho (> 90%)
+- [x] Atualizar checkboxes neste PLAN.md
+- [x] Verificar build sem erros (`ng build`)
+- [x] Verificar lint
 
 ---
 
-## Fase 10 — Metas Financeiras
+## API esperada (resumo)
 
-### Endpoints Utilizados
-
-- `GET /api/v1/goals`
-- `POST /api/v1/goals`
-- `PUT /api/v1/goals/{id}`
-- `DELETE /api/v1/goals/{id}`
-- `GET /api/v1/goals/{id}/progress`
-
-### Componentes
-
-#### GoalListComponent
-
-- Lista de metas
-- Progresso visual (barra de progresso)
-- Botão "Nova Meta"
-- Ações: editar, excluir
-
-#### GoalFormComponent
-
-- Formulário de criação/edição
-- Campos: nome, valor alvo, valor atual, prazo
-
-#### GoalProgressComponent
-
-- Barra de progresso
-- Percentual atingido
-- Valor atual / valor alvo
-- Dias restantes (se prazo definido)
-
----
-
-## Rotas
-
-| Rota | Componente | Guard |
-|------|-----------|-------|
-| `/login` | LoginComponent | - |
-| `/register` | RegisterComponent | - |
-| `/dashboard` | DashboardComponent | authGuard |
-| `/transactions` | TransactionListComponent | authGuard |
-| `/transactions/new` | TransactionFormComponent | authGuard |
-| `/transactions/:id/edit` | TransactionFormComponent | authGuard |
-| `/categories` | CategoryListComponent | authGuard |
-| `/categories/new` | CategoryFormComponent | authGuard |
-| `/categories/:id/edit` | CategoryFormComponent | authGuard |
-| `/accounts` | AccountListComponent | authGuard |
-| `/accounts/new` | AccountFormComponent | authGuard |
-| `/accounts/:id/edit` | AccountFormComponent | authGuard |
-| `/budgets` | BudgetListComponent | authGuard |
-| `/budgets/new` | BudgetFormComponent | authGuard |
-| `/budgets/:id/edit` | BudgetFormComponent | authGuard |
-| `/goals` | GoalListComponent | authGuard |
-| `/goals/new` | GoalFormComponent | authGuard |
-| `/goals/:id/edit` | GoalFormComponent | authGuard |
-| `/**` | Redirect para `/dashboard` | - |
-
----
-
-## Dependências
-
-### Package.json
-
-```json
-{
-  "dependencies": {
-    "@angular/animations": "^22.1.0",
-    "@angular/common": "^22.1.0",
-    "@angular/compiler": "^22.1.0",
-    "@angular/core": "^22.1.0",
-    "@angular/forms": "^22.1.0",
-    "@angular/platform-browser": "^22.1.0",
-    "@angular/platform-browser-dynamic": "^22.1.0",
-    "@angular/router": "^22.1.0",
-    "chart.js": "^4.0.0",
-    "ng2-charts": "^10.0.0",
-    "rxjs": "^7.4.0",
-    "tailwindcss": "^4.0.0",
-    "tslib": "^2.6.0",
-    "zone.js": "^0.15.0"
-  },
-  "devDependencies": {
-    "@angular/cli": "^22.1.0",
-    "@angular/compiler-cli": "^22.1.0",
-    "typescript": "^5.8.0"
-  }
-}
-```
-
----
-
-## Ambiente
-
-### Variáveis de Ambiente
-
-| Variável | Descrição | Padrão |
-|----------|-----------|--------|
-| `apiBaseUrl` | URL da API backend | `http://localhost:8080` |
-
-### environment.ts
-
-```typescript
-export const environment = {
-  production: false,
-  apiBaseUrl: 'http://localhost:8080'
-};
-```
-
-### environment.prod.ts
-
-```typescript
-export const environment = {
-  production: true,
-  apiBaseUrl: ''
-};
-```
-
----
-
-## Ordem de Execução
-
-| Fase | Descrição | Depende de |
-|------|-----------|-----------|
-| 1 | Projeto Base e Configuração | — |
-| 2 | Core (Auth, Interceptor, Guards) | Fase 1 |
-| 3 | Layout (Sidebar + Header) | Fase 1 |
-| 4 | Auth (Login/Cadastro) | Fases 2, 3 |
-| 5 | Dashboard | Fases 2, 3 |
-| 6 | Transações | Fases 2, 3 |
-| 7 | Categorias | Fases 2, 3 |
-| 8 | Contas Bancárias | Fases 2, 3 |
-| 9 | Orçamentos | Fases 2, 3 |
-| 10 | Metas Financeiras | Fases 2, 3 |
-
----
+| Recurso | Endpoints principais |
+|---|---|
+| Autenticação | `/api/v1/auth/login`, `/api/v1/auth/register` |
+| Usuário | `/api/v1/users/me` (GET, PUT) |
+| Dashboard | `/api/v1/dashboard/summary`, `/expenses-by-category`, `/monthly-evolution` |
+| Transações | `/api/v1/transactions` (CRUD + filtros + parcelamento) |
+| Categorias | `/api/v1/categories` (CRUD) |
+| Contas | `/api/v1/accounts` (CRUD) |
+| Orçamentos | `/api/v1/budgets` (CRUD + summary) |
+| Metas | `/api/v1/goals` (CRUD + progress) |
 
 ## Notas
 
-- **Não incluir IA por enquanto** — Fase futura
-- **Repositório separado** — Criar `fincore-frontend` no GitHub
-- **Tailwind CSS v4** — Configuração CSS-first (sem `tailwind.config.js`)
-- **Standalone components** — Sem NgModules
-- **Functional guards** — Sem classes de guard
-- **Lazy loading** — `loadComponent` em vez de `loadChildren`
+- A integração com IA fica para uma fase posterior.
+- A aplicação usa componentes standalone; não criar `NgModules`.
+- Priorizar carregamento sob demanda para páginas quando as rotas forem implementadas.
+- Formulários utilizam modal/dialog sobre a listagem.
+- Gráficos utilizam chart.js (direto, sem wrapper).

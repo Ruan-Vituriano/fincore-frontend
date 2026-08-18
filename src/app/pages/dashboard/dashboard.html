@@ -1,0 +1,52 @@
+<div class="space-y-6">
+  <!-- Error -->
+  @if (error()) {
+    <div class="rounded-lg bg-red-50 p-4 text-sm text-red-700">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Filters -->
+  <div class="flex items-center gap-4">
+    <select
+      [(ngModel)]="month"
+      class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+    >
+      @for (m of months; track m.value) {
+        <option [value]="m.value">{{ m.label }}</option>
+      }
+    </select>
+
+    <select
+      [(ngModel)]="year"
+      class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+    >
+      @for (y of [2024, 2025, 2026, 2027]; track y) {
+        <option [value]="y">{{ y }}</option>
+      }
+    </select>
+
+    <button
+      (click)="loadData()"
+      class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
+    >
+      Filtrar
+    </button>
+  </div>
+
+  <!-- Summary Cards -->
+  @if (summary(); as s) {
+    <app-summary-cards [income]="s.income" [expense]="s.expense" [balance]="s.balance" />
+  }
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    @if (expensesByCategory().length > 0) {
+      <app-expenses-by-category-chart [data]="expensesByCategory()" />
+    }
+
+    @if (monthlyEvolution().length > 0) {
+      <app-monthly-evolution-chart [data]="monthlyEvolution()" />
+    }
+  </div>
+</div>

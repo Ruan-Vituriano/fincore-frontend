@@ -1,0 +1,81 @@
+<div class="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+  <div class="w-full max-w-md">
+    <div class="mb-8 text-center">
+      <h1 class="text-2xl font-bold text-gray-900">Criar conta</h1>
+      <p class="mt-2 text-sm text-gray-600">Comece a gerenciar suas finanças</p>
+    </div>
+
+    <div class="rounded-xl bg-white p-8 shadow-lg">
+      @if (error()) {
+        <div class="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+          {{ error() }}
+        </div>
+      }
+
+      <form (ngSubmit)="onSubmit()" class="space-y-4">
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+          <input
+            id="name"
+            type="text"
+            [(ngModel)]="name"
+            name="name"
+            class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            placeholder="Seu nome"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            id="email"
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            placeholder="seu@email.com"
+          />
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+          <input
+            id="password"
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            placeholder="Mínimo 8 caracteres"
+          />
+        </div>
+
+        <div>
+          <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmar senha</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            placeholder="Repita a senha"
+          />
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="loading()"
+          class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-50"
+        >
+          {{ loading() ? 'Criando conta...' : 'Criar conta' }}
+        </button>
+      </form>
+
+      <p class="mt-6 text-center text-sm text-gray-600">
+        Já tem uma conta?
+        <a routerLink="/login" class="font-medium text-emerald-600 hover:text-emerald-500">
+          Entrar
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+  <div class="rounded-xl bg-white p-6 shadow-sm">
+    <p class="text-sm font-medium text-gray-500">Receitas</p>
+    <p class="mt-2 text-2xl font-semibold text-emerald-600">{{ income() | currency:'BRL':'symbol':'1.2-2' }}</p>
+  </div>
+
+  <div class="rounded-xl bg-white p-6 shadow-sm">
+    <p class="text-sm font-medium text-gray-500">Despesas</p>
+    <p class="mt-2 text-2xl font-semibold text-red-600">{{ expense() | currency:'BRL':'symbol':'1.2-2' }}</p>
+  </div>
+
+  <div class="rounded-xl bg-white p-6 shadow-sm">
+    <p class="text-sm font-medium text-gray-500">Saldo</p>
+    <p class="mt-2 text-2xl font-semibold" [class]="balance() >= 0 ? 'text-emerald-600' : 'text-red-600'">
+      {{ balance() | currency:'BRL':'symbol':'1.2-2' }}
+    </p>
+  </div>
+</div>
